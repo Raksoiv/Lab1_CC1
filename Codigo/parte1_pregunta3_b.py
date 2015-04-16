@@ -1,4 +1,4 @@
-from pregunta3_a import epsilon
+from parte1_pregunta3_a import epsilon
 
 print("| i | e |")
 for i in range (-50, 51):
