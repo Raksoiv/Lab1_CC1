@@ -158,7 +158,7 @@ La razón de que la distancia \textit{(iii)} fallara es la pérdidad de precisi�
 De acuerdo con las representaciones computacionales que utilizan los números flotantes de 64 bits, éstos contienen $52$ bits de mantisa que en conjunto con su exponente solo pueden representar operaciones aritméticas entre números cuya diferencia este dentro de los $52$ exponentes anteriores al número más grande, es por esto que sumas entre el $4$ cuya representación es $1.00 \times 2^{2}$ y el $\epsilon_{mach}$ cuya representación es $1.00 \times 2^{-52}$ no tienen efecto ya que la diferencia entre sus exponentes supera los 52 bits de la mantisa. Por lo tanto \textbf{no} estamos de acuerdo con la afirmación de \textit{Van Simpson}.
 
 \item Desarrolle un código para determinar/estimar el flotante $fl(x)$ positivo de menor magnitud, tal que $fl(x) + \epsilon_{mach}$ no sea representable\\
-De acuerdo con el análisis teórico, el valor debería rondar el número $2$ ya que es el primer entero cuya suma con $\epsilon_{mach}$ no es representable. Por lo tanto se decidió utilizar un \textit{approach} de bisección para buscar una raiz de la funcion: $(x + \epsilon_{mach}) - x = 0 ; x \in [0, 2]$ la cuál entregará el menor numero en el cual en la resta solicitada $\epsilon_{mach}$ no es representable.
+De acuerdo con el análisis teórico, el valor debería rondar el número $2$ ya que es el primer entero cuya suma con $\epsilon_{mach}$ no es representable. Por lo tanto se decidió utilizar un \textit{approach} de bisección para buscar una raiz de la función: $(x + \epsilon_{mach}) - x = 0 ; x \in [0, 2]$ la cuál entregará el menor número en el cual en la resta solicitada $\epsilon_{mach}$ no es representable.
 \begin{verbatim}
 e_mach = 2**(-52)
 x = 1.9999999999999
@@ -181,7 +181,7 @@ Por lo tanto se estima que $2$ es el menor numero positivo tal que la suma no es
 \end{center}
 
 \item Desarrolle un código para determinar/estimar el flotante $fl(x)$ positivo de mayor magnitud, tal que $fl(x) + \frac{\epsilon_{mach}}{2}$ sea representable\\
-De acuerdo con el análisis teórico, el valor debería rondar el número $1$ ya que es el primer entero cuya suma con $\epsilon_{mach}$ no es representable. Por lo tanto se decidió utilizar un \textit{approach} de bisección para buscar una raiz de la funcion: $(x + \epsilon_{mach}) - x = 0 ; x \in [0, 2]$ la cuál entregará el menor numero en el cual en la resta solicitada $\epsilon_{mach}$ no es representable.
+De acuerdo con el análisis teórico, el valor debería rondar el número $1$ ya que es el primer entero cuya suma con $\epsilon_{mach}$ no es representable. Por lo tanto se decidió utilizar un \textit{approach} de bisección para buscar una raiz de la función: $(x + \epsilon_{mach}) - x = 0 ; x \in [0, 2]$ la cuál entregará el mayor número en el cual en la resta solicitada $\epsilon_{mach}$ no es representable.
 \begin{verbatim}
 e_mach = 2**(-52)
 x_1 = 0.9999999999999
@@ -192,15 +192,15 @@ while(((x_2 + e_mach/2) - x_2) != 0):
 	print(x_2)
 print("El mayor numero en el cual la suma es representables es: " + str(x_1))
 \end{verbatim}
-Por lo tanto se estima que $0.9999999999999999$ es el menor numero positivo tal que la suma no es representable debido a que:
+Por lo tanto se estima que $0.9999999999999999$ es el mayor numero positivo tal que la suma no es representable debido a que:
 \begin{center}
 \begin{tabular}{c c | c | c | c}
  \cline{3-4}
- & 1. & 0000000000000000000000000000000000000000000000000000 & 000 & $\times 2$\\
+ & 1. & 1111111111111111111111111111111111111111111111111110 & 000 & $\times 2^{-2}$\\
  \cline{3-4}
- + & 0. & 0000000000000000000000000000000000000000000000000000 & 100 & $\times 2$\\
+ + & 0. & 0000000000000000000000000000000000000000000000000010 & 100 & $\times 2^{-2}$\\
  \cline{1-5}
- = & 1. & 0000000000000000000000000000000000000000000000000000 & 100 & $\times 2$\\
+ = & 1. & 0000000000000000000000000000000000000000000000000000 & 000 & $\times 1$\\
  \cline{3-4}
 \end{tabular}
 \end{center}
@@ -210,7 +210,21 @@ Por lo tanto se estima que $0.9999999999999999$ es el menor numero positivo tal 
 
 \subsection{Pregunta 3}
 \begin{enumerate}[a)]
-\item Desarrolle una función \textbf{epsilon(fl)} que reciba un número de punto flotante \textbf{fl} y \textbf{estime} el correspondiente $e$ (diferencia absoluta entre fl y el siguiente flotante representable).
+\item Desarrolle una función \textbf{epsilon(fl)} que reciba un número de punto flotante \textbf{fl} y \textbf{estime} el correspondiente $e$ (diferencia absoluta entre fl y el siguiente flotante representable).\\
+El correspondiente código que define la función \textbf{epsilon(fl)} es:
+\begin{verbatim}
+def epsilon(fl):
+	if(fl >= 1):
+		exp = 0
+		while(fl >= 2 ** (exp + 1)):
+			exp += 1
+	else:
+		exp = -1
+		while(fl <= 2 **(exp - 1)):
+			exp -= 1
+	exp -= 52
+	return 2**exp
+\end{verbatim}
 
 \item Realice un gráfico $e$ v/s $fl(x)$ para valores de $fl(x) \in \{2^{-50}, 2^{-49}, ..., 2^{49}, 2^{50}\}$
 
@@ -258,7 +272,9 @@ Se aprecia que a partir de $t=8$ existe una falta de precisión del computador, 
 
 \item Encuentre \textbf{dos} representaciones alternativas para eliminar los errores de cancelación del Factor Mavillano. \\
 Primera representación:
-$$y(x)= \left(\frac{cos(x)}{sen(x)}\right)^2 - \frac{cos(x)}{sen(x)^2}$$
+$$y(x)= \left(\frac{cos(x)}{sen(x)}\right)^2 - \frac{cos(x)}{sen(x)^2}$$ \\
+Segunda Representación:
+$$y(x)=$$
 
 \item Calcule los errores relativos entre el valor aritmético y sus representaciones alternativas para cada evaluación realizada. Concluya al respecto.
 
