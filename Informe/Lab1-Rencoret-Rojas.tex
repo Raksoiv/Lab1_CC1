@@ -1,0 +1,125 @@
+\documentclass[10pt|letterpaper]{article}
+\usepackage{color}
+\usepackage[utf8]{inputenc} 
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{enumerate}
+
+\begin{document}
+\begin{center}{
+\huge\textbf{Laboratorio 1 \\ Computación Científica I}} \\
+\bigskip
+\textit{I) Representación Punto Flotante \\ II) Pérdida de significancia}
+
+\vspace*{5.0 in}
+\small{INTEGRANTES:} \\
+\small{Oscar Rencoret oscar.rencoret@alumnos.usm.cl 2011735352-8} \\
+\small{Ximena Rojas ximena.rojas@alumnos.usm.cl 201173568-4}
+\end{center}
+
+\newpage
+
+\section{Introducción}
+Este informe tiene como objetivo resolver y analizar los ejercicios propuestos que ponen en evidencia las limitaciones de realizar calculos aritmeticos en un computador y que se deben tener en cuenta al realizar operaciones aritmeticas.
+
+\section{Pequeña descripción de los experimentos}
+\begin{itemize}
+\item Se pone a prueba la precisión del ordenador, realizando operaciones aritmeticas en ordenes de magnitud alrededor del $\epsilon_{match}$ 
+\item Se representan gráfcamente los numeros decimales en notación de punto flotante con la finalidad de evidenciar la perdida de precición.
+\end{itemize}
+
+\section{Parte I: Representación Punto Flotante}
+
+\subsection{Pregunta 1}
+
+\begin{enumerate}[a)]
+\item Calcule las distancias aritméticamente.\\
+Aritméticamente las sumas dan como resultado:
+\begin{enumerate}[i.]
+\item $((1 + 2^{-52}) - 1) + 2^{-54} + 1 = 2^{-52} + 2^{-54} + 1\\
+2^{-52} + 2^{-54} + 1 = 2^{2} * 2^{-54} + 2^{-54} + 1\\
+2^{2} * 2^{-54} + 2^{-54} + 1 = 2^{-54}( 2^{2} + 1) + 1\\
+2^{-54}( 2^{2} + 1) + 1 = 2^{-54} * 5 + 1$
+$$5 * 2^{-54} + 1 = 1.000000000000000277555756$$
+\newline 
+\newline
+$((1 + 2^{-54}) - 1) + 2^{-52} + 1 = 2^{-54} + 2^{-52} + 1\\
+2^{-54} + 2^{-52} + 1 = 2^{-54} + 2^{2} * 2^{-54} + 1 \\
+2^{-54} + 2^{2} * 2^{-54} + 1 = 2^{-54}( 1 + 2^{2}) + 1\\
+2^{-54}( 1 + 2^{2}) + 1 = 2^{-54} * 5 + 1$
+$$5 * 2^{-54} + 1 = 1.000000000000000277555756$$
+\item $(5 - 4) + 2^{-52} = 1 + 2^{-52}$ 
+$$1 + 2^{-52} = 1.000000000000000222044605$$
+\newline 
+\newline
+$5 - (4 - 2^{-52}) = 5 - 4 - 2^{-52}\\
+5 - 4 - 2^{-52} = 1 - 2^{-52}$
+$$1 - 2^{-52} = 0.999999999999999777955395$$
+\item $(2^{53} + (-2^{53})) + (1 + 0.5 + 0.25) = (2^{53} - 2^{53}) + 1.75$
+$$(2^{53} - 2^{53}) + 1.75 = 1.75$$
+\newline 
+\newline
+$(2^{53} + (1 + 0.5 + 0.25)) - 2^{53} = 2^{53} + 1.75 -  2^{53}$ 
+$$2^{53} + 1.75 -  2^{53} = 1.75$$
+\end{enumerate}
+
+\item Con la ayuda de \textit{Python} o \textit{Matlab}, calcule nuevamente las distancias, esta vez computacionalmente, analizando cada caso del calculo (desarrollo de los paréntisis) y como influyen en el resultado\\
+Lo resultados son:
+\begin{verbatim}
+i.1
+((1 + 2**(-52)) - 1) + 2**(-54) + 1
+((1.0000000000000002) - 1) + 2**(-54) + 1
+(2.220446049250313e-16) + 2**(-54) + 1
+2.7755575615628914e-16 + 1
+1.0000000000000002
+i.2
+((1 + 2**(-54)) - 1) + 2**(-52) + 1
+((1.0) - 1) + 2**(-52) + 1
+(0.0) + 2**(-52) + 1
+2.220446049250313e-16 + 1
+1.0000000000000002
+
+ii.1
+(5 - 4) + 2**(-52)
+1 + 2**(-52)
+1.0000000000000002
+ii.2
+5 - (4 - 2**(-52))
+5 - 4.0
+1.0
+
+iii.1
+(2**(53) + (-2**(53)) + (1 + .5 + .25)
+0 + 1.75
+1.75
+iii.2
+(2**(53) + (1 + .5 + .25)) - 2**(53)
+9007199254740994.0 - 2**(53)
+2.0
+\end{verbatim}
+El código utilizado para resolver las sumas se encuentra en la carpeta "Códigos"
+
+\item Defina que es $\epsilon_{match}$\\
+$\epsilon_{match}$ es la distancia que existe entre el número 1 y el menor número siguiente en representación punto flotante que es mayor a 1.
+En representación con doble precisión de punto flotante, corresponde a $1 + 2^{-52}$, por lo que la distancia corresponde  a $\epsilon_{mach} = 2^{-52}$.
+
+\item Analice y concluya: ¿Existen diferencias entre los resultados aritméticos y computacionales?.
+De ser así, explique porque ocurren estas diferencias\\
+
+\item ¿Qué distancias son representables en el sistema?
+
+\end{enumerate}
+
+\subsection{Pregunta 2}
+
+\subsection{Pregunta 3}
+
+\section{Parte II: Pérdida de Significancia}
+
+\subsection{Pregunta 1}
+
+\section{Conclusión}
+
+\section{Referencias}
+
+\end{document}
