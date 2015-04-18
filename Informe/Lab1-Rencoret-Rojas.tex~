@@ -2,7 +2,6 @@
 \usepackage[utf8]{inputenc} 
 \usepackage{enumerate}
 \usepackage{amsmath}
-\usepackage{graphicx}
 
 \begin{document}
 \begin{center}{
@@ -205,6 +204,8 @@ Por lo tanto se estima que $0.9999999999999999$ es el mayor numero positivo tal 
  \cline{3-4}
 \end{tabular}
 \end{center}
+
+
 \end{enumerate}
 
 \subsection{Pregunta 3}
@@ -226,10 +227,6 @@ def epsilon(fl):
 \end{verbatim}
 
 \item Realice un gráfico $e$ v/s $fl(x)$ para valores de $fl(x) \in \{2^{-50}, 2^{-49}, ..., 2^{49}, 2^{50}\}$
-
-\begin{figure}[h]
-\includegraphics[width=\textwidth]{grafico}
-\end{figure}
 
 \item Indique la relación del gráfico anterior con la propiedad \\
 $\mid fl(x)-x \mid \leq 0,5 \epsilon_{mach} \mid x \mid$
@@ -295,125 +292,4 @@ $$y(x)=$$
 \section{Anexo}
 Para la resolución de los problemas de utilizaron los siguientes códigos de  \textit{Python}:
 
-\begin{itemize}
-\item Parte I, Pregunta 1, b)
-\begin{verbatim}
-# Item 1
-print("i.1")
-print("((1 + 2**(-52)) - 1) + 2**(-54) + 1")
-r1 = 1 + 2**(-52)
-print("((" + str(r1) + ") - 1) + 2**(-54) + 1")
-r1 -= 1
-print("(" + str(r1) + ") + 2**(-54) + 1")
-r1 += 2**(-54)
-print(str(r1) + " + 1")
-r1 += 1
-print(str(r1))
-print("i.2")
-print("((1 + 2**(-54)) - 1) + 2**(-52) + 1")
-r1 = 1 + 2**(-54)
-print("((" + str(r1) + ") - 1) + 2**(-52) + 1")
-r1 -= 1
-print("(" + str(r1) + ") + 2**(-52) + 1")
-r1 += 2**(-52)
-print(str(r1) + " + 1")
-r1 += 1
-print(str(r1))
-print("")
-# Item 2
-print("ii.1")
-print("(5 - 4) + 2**(-52)")
-r1 = 5 - 4
-print (str(r1) + " + 2**(-52)")
-r1 += 2**(-52)
-print(r1)
-print("ii.2")
-print("5 - (4 - 2**(-52))")
-r1 = 4 - 2**(-52)
-print("5 - " + str(r1))
-r1 = 5 - r1
-print(r1)
-print("")
-#Item 3
-print("iii.1")
-print("(2**(53) + (-2**(53)) + (1 + .5 + .25)")
-r1 = 2**(53) + (-2**(53))
-r2 = 1 + .5 + .25
-print(str(r1) + " + " + str(r2))
-print(str(r1 + r2))
-print("iii.2")
-print("(2**(53) + (1 + .5 + .25)) - 2**(53)")
-r1 = 2**(53) + (1 + .5 + .25)
-print(str(r1) + " - 2**(53)")
-r1 = r1 - 2**(53)
-print(r1)
-\end{verbatim}
-\item Parte I, Pregunta 2, b)
-\begin{verbatim}
-e_mach = 2**(-52)
-x = 1.9999999999999
-while(((x + e_mach) - x) != 0):
-	x += e_mach
-	print(x)
-print("El menor numero en el cual la suma no es representables es: " + str(x))
-
-\end{verbatim}
-\item Parte I, Pregunta 2, c)
-\begin{verbatim}
-e_mach = 2**(-52)
-x_1 = 0.9999999999999
-x_2 = x_1
-while(((x_2 + e_mach/2) - x_2) != 0):
-	x_1 = x_2
-	x_2 += e_mach/2
-	print(x_2)
-print("El mayor numero en el cual la suma es representables es: " + str(x_1))
-\end{verbatim}
-\item Parte I, Pregunta 3, a)
-\begin{verbatim}
-def epsilon(fl):
-	if(fl >= 1):
-		exp = 0
-		while(fl >= 2 ** (exp + 1)):
-			exp += 1
-	else:
-		exp = -1
-		while(fl <= 2 **(exp - 1)):
-			exp -= 1
-	exp -= 52
-	return 2**exp
-\end{verbatim}
-\item Parte I, Pregunta 3, b)
-\begin{verbatim}
-from parte1_pregunta3_a import epsilon
-
-print("| i | e |")
-for i in range (-50, 51):
-	print("| " + str(i) + " | " + str(epsilon(2**(i))) + " |")
-\end{verbatim}
-\item Parte II, Pregunta 1, a)
-\begin{verbatim}
-from math import *
-def Mavillan ():
-    for i in range(1,21):
-        a = 10**(-i)
-        b = (1-(1/cos(a)))/((tan(a)**2))
-        print(b)
-    print ("\n")
-Mavillan()
-\end{verbatim}
-
-\item Parte II, Pregunta 1, b)
-\begin{verbatim}
-from math import *
-def Mavillan2():
-    for i in range(1,21):
-        a = 10**(-i)
-        b = ((cos(a)/sin(a))**2)-(cos(a)/(sin(a))**2)
-        print(b)
-    print ("\n")
-Mavillan2()
-\end{verbatim}
-
-\end{itemize}
 \end{document}
